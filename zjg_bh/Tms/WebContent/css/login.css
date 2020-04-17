@@ -1,0 +1,112 @@
+/*登录cssReset*/
+body,div,p,h1,h2,h3,h4,input,select,ul,li,ol,table,dt,tr,td,textarea,a,span,form{margin: 0;padding: 0;}
+html,body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select:none;-moz-user-select: none;-ms-user-select: none;user-select:none ;font-family:'Microsoft YaHei';-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
+a,a:hover{text-decoration: none;}
+ul,li{list-style: none;}
+a,img{border: none;}
+.clearfix:after{content:"";clear:both;height:0;display:block;font-size:0;visibility:hidden;}
+@media screen and (min-width:1024px){
+    body{width:100%;height: auto;}
+}
+html{box-sizing: border-box;}*,*:before,*:after{box-sizing: inherit;}
+/*登陆页样式*/
+.login_main{
+    background:url(../img/common/beijing.jpg) no-repeat scroll center;
+    background-size:cover;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='e:/tscdj/bhsmc-tscdj-web/src/main/webapp/resources/themes/citizencard/images/beijing.jpg',sizingMethod='scale');/*解决ie8背景图片background-size:;*/
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    overflow: hidden;
+}
+.container{
+    width:900px;
+    height:100%;
+    margin:0 auto;
+    position:relative;
+}
+.login_left{
+    position:absolute;
+    top:50%;
+    left:0;
+    margin-top:-93px;
+}
+.login_right{
+    width:357px;
+    height:534px;
+    position:absolute;
+    top:50%;
+    right:0;
+    margin-top:-144px;
+    background:url(../img/common/login_box.png) no-repeat;
+}
+.login_right input {
+    display: block;
+    position: absolute;
+}
+.login_right input:focus {outline: none;}
+.login_error{
+    position:absolute;
+    top:75px;
+    left:50%;
+    -webkit-transform:translateX(-50%);
+    -o-transform:translateX(-50%);
+    margin-left:-51px\9;
+    -moz-transform:translateX(-50%);
+    color:red;
+    font-size:14px;
+}
+.login_txt{
+    top:112px;
+    background:transparent;
+    border:none;
+    height:30px;
+    left:96px;
+    /*padding-left:40px;*/
+    color:#004b96;
+    width:204px;
+}
+.login_pwd{
+    top:155px;
+    background:transparent;
+    border:none;
+    height:30px;
+    left:96px;
+    /*padding-left:40px;*/
+    color:#004b96;
+    width:204px;
+}
+input::-ms-clear,input::-ms-reveal{
+    width:20px;
+    height:20px;
+    color:rgba(0,75,150,0.5);
+}
+.login_btn{
+    display:inline-block;
+    position:absolute;
+    top:225px;
+    background:#e64f05;
+    width:249px;
+    height:35px;
+    border:none;
+    left:50%;
+    margin-left:-124px;
+    border-radius:2px;
+    color:#fff;
+    -moz-transition:background .3s ease;
+    -webkit-transition:background .3s ease;
+    -ms-transition:background .3s ease;
+    -o-transition:background .3s ease;
+    text-decoration: none;
+    text-align:center;
+    line-height:35px;
+}
+.login_btn:hover{
+    background:#de2d10;
+    -moz-transition:background .3s ease;
+    -webkit-transition:background .3s ease;
+    -ms-transition:background .3s ease;
+    -o-transition:background .3s ease;
+}

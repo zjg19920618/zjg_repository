@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd 
+	 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd 
+	 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!--定时发送 -->  
+    <!-- 要调用的工作类 -->  
+    <bean id="quartzMsg" class="com.boomhope.tms.quartz.MachineWarning"></bean>  
+    <!-- 定义调用对象和调用对象的方法 -->  
+    <bean id="msgjobtask"  
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 调用的类 -->  
+        <property name="targetObject">  
+            <ref bean="quartzMsg" />  
+        </property>  
+        <!-- 调用类中的方法 -->  
+        <property name="targetMethod">  
+            <value>work</value>  
+        </property>  
+    </bean>  
+    <!-- 定义触发时间 -->  
+    <bean id="msgdoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+        <property name="jobDetail">  
+            <ref bean="msgjobtask" />  
+        </property>  
+        <!-- cron表达式 -->  
+        <property name="cronExpression">  
+            <value>0/5 * *  * * ?</value>  
+        </property>  
+    </bean>
+    
+    <!--定时发送 -->  
+    <!-- 要调用的工作类 -->  
+    <bean id="quartzBankInfo" class="com.boomhope.tms.quartz.UploadBankInfoTask"></bean>  
+    <!-- 定义调用对象和调用对象的方法 -->  
+    <bean id="bankInfojobtask"  
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 调用的类 -->  
+        <property name="targetObject">  
+            <ref bean="quartzBankInfo" />  
+        </property>  
+        <!-- 调用类中的方法 -->  
+        <property name="targetMethod">  
+            <value>uploadBankInfos</value>  
+        </property>  
+    </bean>  
+    <!-- 定义触发时间 -->  
+    <bean id="bankInfoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+        <property name="jobDetail">  
+            <ref bean="bankInfojobtask" />  
+        </property>  
+        <!-- cron表达式 -->  
+        <property name="cronExpression">  
+            <value>0 0 6 * * ?</value>  
+        </property>  
+    </bean>
+    
+	<!-- 定时上传指定目录上的文件 -->
+    <!-- 要调用的工作类 -->  
+    <bean id="UploadFilesTask" class="com.boomhope.tms.quartz.UploadFilesTask"></bean>  
+    <!-- 定义调用对象和调用对象的方法 -->  
+    <bean id="uploadFilesTasks" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <!-- 调用的类 -->  
+        <property name="targetObject">  
+            <ref bean="UploadFilesTask" />  
+        </property>  
+        <!-- 调用类中的方法 -->  
+        <property name="targetMethod">  
+            <value>uploadFiles</value>  
+        </property>  
+    </bean>  
+    <!-- 定义触发时间 -->  
+    <bean id="UploadFilesServiseUploadFiles" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+        <property name="jobDetail">  
+            <ref bean="uploadFilesTasks" />  
+        </property>  
+        <!-- cron表达式 -->  
+        <property name="cronExpression">  
+            <value>0 0 23 * * ?</value>  
+        </property>  
+    </bean>
+    
+    
+    
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz" lazy-init="false" autowire="no"  
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="triggers">  
+            <list>  
+               <!-- <ref bean="msgdoTime"/> -->             
+                <ref bean="UploadFilesServiseUploadFiles"/>
+                <ref bean="bankInfoTime"/>                    
+            </list>  
+        </property>  
+    </bean>
+</beans>
+
+	

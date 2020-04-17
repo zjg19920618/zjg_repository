@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd   
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+	<!--①邮件服务器-->
+	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="protocol" value="smtp" />
+		<beans:property name="host" value="smtp.exmail.qq.com" />
+		<beans:property name="port" value="465" />
+		<beans:property name="username" value="zhaoyu@hunanbohong.com" />
+		<beans:property name="password" value="Fhqpgf1" />
+		
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<!-- 如果是网易邮箱， mail.smtp.starttls.enable 设置为 false-->
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+				<beans:prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	<!--②异步线程执行器 -->
+	<beans:bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<beans:property name="corePoolSize" value="10" />
+		<beans:property name="maxPoolSize" value="30" />
+	</beans:bean>
+	
+	<beans:bean id="mailService" class="com.boomhope.tms.service.impl.MailServiceImpl">
+		<beans:property name="mailSender" ref="mailSender" />
+		<beans:property name="taskExecutor" ref="taskExecutor" />
+	</beans:bean>
+
+</beans:beans>

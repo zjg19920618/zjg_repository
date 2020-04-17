@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Info>  
+   <Version>1.0.0.1</Version>
+   <Operation>update</Operation>
+   <!-- 增量升级文件 -->
+   <Files>
+     <File>
+      <Name>hdjUp.jar</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>1.0</SubVer>
+    </File>
+    <File>
+      <Name>config</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>1.0</SubVer>
+    </File>
+    <File>
+      <Name>autoupdate.xml</Name>
+      <Path>/home/tshdj/update/whole/config/</Path>
+      <clientPath>C:\\</clientPath>
+      <SubVer>1.0</SubVer>
+    </File>
+  </Files>
+  <Return>
+    <File>
+      <Name>lib</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>pic</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.bat</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjup.exe</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.jar</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>unins000.dat</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>unins000.exe</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>config</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+  </Return>
+  <!-- 备份配置文件 -->
+  <Backup>
+    <File>
+      <Name>lib</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>pic</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.bat</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjup.exe</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.jar</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>unins000.dat</Name>
+      <Path>/home/tshdj/update/return/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>unins000.exe</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>config</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+    <File>
+      <Name>autoupdate.xml</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\</clientPath>
+      <SubVer>8.8</SubVer>
+    </File>
+  </Backup>
+  <!-- 全量升级 -->
+  <whole>
+  	<File>
+      <Name>lib</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>pic</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.bat</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>hdjup.exe</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>hdjUp.jar</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>unins000.dat</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>unins000.exe</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+    <File>
+      <Name>config</Name>
+      <Path>/home/tshdj/update/whole/</Path>
+      <clientPath>C:\\Program Files\\tshdj\\</clientPath>
+      <SubVer>9.9</SubVer>
+    </File>
+  </whole>
+</Info>

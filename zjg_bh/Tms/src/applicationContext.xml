@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd 
+	 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd 
+	 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- 读取properties文件 -->
+	<context:property-placeholder location="classpath:/jdbc.properties, classpath:/log4j.properties" />
+	
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath*:config.properties </value>
+            </list>
+        </property>
+        <property name="fileEncoding">
+      		<value>UTF-8</value>
+   	 	</property>
+    </bean>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties" />
+    </bean>
+	
+	
+	<!-- 注解搜索路径 -->
+	<context:component-scan base-package="com.boomhope.tms" />
+	<!-- spring注解 -->
+	<bean id="springAnnotations" class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<!-- 数据库连接池c3p0配置，不同工程id最好起不一样 -->
+	<bean id="sic_datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${c3p0.driverClass}"></property>
+		<property name="jdbcUrl" value="${c3p0.url}"></property>
+		<property name="user" value="${c3p0.user}"></property>
+		<property name="password" value="${c3p0.password}"></property>
+		<property name="minPoolSize" value="${c3p0.minPoolSize}"></property> <!-- 连接池中保留的最小连接数 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property> <!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxIdleTime" value="${c3p0.maxIdleTime}"></property> <!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property> <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}"></property> <!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="maxStatements" value="${c3p0.maxStatements}"></property> <!-- JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements属于单个connection而不是整个连接池，所以设置这个参数需要考虑到多方面的因素。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default：0 -->
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property><!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default:3 -->
+		<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"></property> <!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="testConnectionOnCheckin" value="${c3p0.testConnectionOnCheckin}"></property> <!-- true表示每次把连接checkin到pool里的时候测试其有效性。因为是个事后操作，所以是异步的，应用端不需要等待测试结果，但同样会造成至少多一倍的数据库调用。 -->
+		<property name="testConnectionOnCheckout" value="${c3p0.testConnectionOnCheckout}"></property> <!-- 因性能消耗大，请只在需要的时候使用它。Default: false 如果设为true那么在每个connection提交的 时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable等方法来提升连接测试的性能。 -->
+		<property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"></property> <!--当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出 SQLException,如设为0则无限期等待。单位毫秒。Default:0 -->
+		<property name="breakAfterAcquireFailure" value="${c3p0.breakAfterAcquireFailure}"></property> <!-- Default:false 获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常，但是数据源仍有效保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。 -->
+	</bean>
+
+	<!-- session工厂 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="sic_datasource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop> <!-- 一个Hibernate Dialect类名允许Hibernate针对特定的关系数据库生成优化的SQL -->
+				<prop key="hibernate.show_sql">true</prop> <!-- 如果启用，则在控制台输出sql语句，方便调试查看。取值 true | false -->
+				<prop key="hibernate.format_sql">true</prop> <!-- 如果启用，则会使输出或日志中的SQL语句格式更加美观统一 。取值 true | false -->
+				<prop key="hibernate.jdbc.fetch_size">100</prop> <!-- 设定JDBC的Statement读取数据的时候每次从数据库中取出的记录条数。 -->
+				<prop key="hiberante.jdbc.batch_size">50</prop> <!-- 设定对数据库进行批量 删除、更新、插入 的时候的批次大小 -->
+				<prop key="hibernate.jdbc.use_streams_for_binary">true</prop> <!-- 在从JDBC读写binary或者serializable类型时,是否使用stream. 这是一个系统级别的属性。 -->
+				<prop key="hibernate.generate_statistics">true</prop> <!-- 如果开启, Hibernate将收集有助于性能调节的统计数据. 取值 true | false -->
+				<prop key="hibernate.connection.release_mode">auto</prop> <!-- 指定Hibernate在何时释放JDBC连接 。取值on_close | after_transaction | after_statement | auto默认情况下，直到Session被显式关闭或被断开连接时，才会释放JDBC连接；对于应用程序服务器的JTA数据源，应用after_statement，这样在每次JDBC调用后，都会主动的释放连接；对于非JTA的连接，使用after_transaction在每个事务结束时释放连接是合理的。 auto将为JTA和CMT事务策略选择after_statement，为JDBC事务策略选择after_transaction。 -->
+				<prop key="hibernate.connection.autocommit">true</prop> <!-- 是否自动提交事务 -->
+				<prop key="hibernate.connection.useUnicode">true</prop>  <!-- 连接数据库时是否使用Unicode编码 -->
+				<prop key="hibernate.connection.characterEncoding">UTF-8</prop> <!-- 连接数据库时数据的传输字符集编码方式 -->
+				<prop key="hibernate.autoReconnect">true</prop> <!-- 连接数据库超时设置 ，自动重连 -->
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop> <!-- 是否使用CGLIB来代替运行时反射操作。 -->
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</prop> <!-- 选择Hibernate4.0的查询翻译 器 -->
+				<prop key="hibernate.query.substitutions">true 1,false 0,yes 'Y',no 'N'</prop> <!-- 把Hibernate查询中的一些短语映射为SQL短语。（比如说短语可能是函数或者字符） . -->
+				<prop key="hibernate.cache.use_second_level_cache">true</prop> <!--设置缓存机制为二级缓存 -->
+				<prop key="hibernate.cache.use_query_cache">true</prop> <!-- 允许查询缓存, 个别查询仍然需要被设置为可缓存的. 取值 true|false -->
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop> <!-- 设置二级缓存的Provider类 -->
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">classpath:/ehcache.xml</prop> <!--设置缓存的配置文件路径 -->
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">true</prop>
+			</props>
+		</property>
+		<!-- 通过注解扫描解析hibernate映射，以下是几种不同配置的区别： 
+			value="com.xxx.entity" 会解析成"classpath*:com/xxx/entity**/*.class"，这个路径可以找出com/xxx/entity根目录下的类文件; 
+			value="com.xxx.entity.*" 会解析成"classpath*:com/xxx/entity/***/*.class"，这个路径可以找出com/xxx/entity根目录下一级子目录中的类文件，如com/xxx/entity/son/Hi.class，而不能找出com/xxx/entity目录下的类文件;
+			value="com.xxx.entity." (注意最后的点) ， 会转换成"classpath*:com/xxx/entity/**/*.class"，这个路径可以找出com/xxx/entity根目录下及其子孙目录下所有的类文件。 
+		-->
+		<property name="packagesToScan">
+			<list>
+				<value>com.boomhope.tms.entity</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager" abstract="false" lazy-init="default" autowire="default">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 配置事务异常封装 -->
+	<bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+	<!-- 事务传播特性 -->
+	<!-- Propagation类的事务属性详解： 
+		REQUIRED：支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。 
+		SUPPORTS：支持当前事务，如果当前没有事务，就以非事务方式执行。 
+		MANDATORY：支持当前事务，如果当前没有事务，就抛出异常。 
+		REQUIRES_NEW：新建事务，如果当前存在事务，把当前事务挂起。
+		NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 
+		NEVER：以非事务方式执行，如果当前存在事务，则抛出异常。 
+		NESTED：支持当前事务，如果当前事务存在，则执行一个嵌套事务，如果当前没有事务，就新建一个事务。
+	-->
+	<!-- 声明式容器事务管理 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="import*" propagation="REQUIRED" />
+			<tx:method name="new*" propagation="REQUIRED" />
+			<tx:method name="set*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="select*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="query*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="load*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="login*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置事务切入点和通知 -->
+	<aop:config>
+		<aop:advisor id="sicAdvisor" pointcut="execution(* com.boomhope.tms.service.*.*(..))" advice-ref="txAdvice" />
+	</aop:config>
+		
+</beans>
+
+	
